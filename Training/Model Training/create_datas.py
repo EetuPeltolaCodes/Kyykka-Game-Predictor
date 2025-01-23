@@ -12,10 +12,11 @@ def get_matches():
         if match['home_score_total'] != None:
             home_ids.append(match['home_team']['id'])
             away_ids.append(match['away_team']['id'])
+            # 1 if home team wins, 2 if away team wins, 0 if draw
             if match['home_score_total'] > match['away_score_total']:
                 winners.append(1)
             elif match['home_score_total'] < match['away_score_total']:
-                winners.append(-1)
+                winners.append(2)
             else:
                 winners.append(0)
         else:
@@ -54,4 +55,3 @@ def datas():
     test_away_ids = np.array(away_ids)[test_data_idxs]
     test_winners = np.array(winners)[test_data_idxs]
     get_data(train_home_ids, train_away_ids, train_winners, 'test')
-    
