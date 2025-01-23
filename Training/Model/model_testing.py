@@ -19,7 +19,7 @@ def test_model(model):
     test_Y_tensor = torch.tensor(test_Y, dtype=torch.long)
     test_dataset = torch.utils.data.TensorDataset(test_X_tensor, test_Y_tensor)
     test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=False)
-    model.load_state_dict(torch.load('best_model.pth', weights_only=False))
+    model.load_state_dict(torch.load('Training\model.pth', weights_only=False))
     model.eval() 
     correct = 0
     total = 0
@@ -37,5 +37,9 @@ def test_model(model):
         print(f"Test Accuracy: {accuracy:.2f}%")
 
         cm = confusion_matrix(test_Y, model(test_X_tensor.float()).argmax(dim=1).numpy())
-        cm_display = ConfusionMatrixDisplay(cm, display_labels=np.arange(10)).plot(cmap='Blues')
+        cm_display = ConfusionMatrixDisplay(cm, display_labels=np.arange(3)).plot(cmap='Blues')
         plt.show()
+        
+if __name__ == '__main__':
+    model = LinearNeuralNetwork()
+    test_model(model)

@@ -88,6 +88,7 @@ def train_model(num_epochs, batch_size):
     plt.show()
     
     
-train_model(40, 32)
+if __name__ == '__main__':
+    train_model(40, 32)
     
     
