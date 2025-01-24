@@ -18,13 +18,13 @@ def test_model(model):
     test_dataset = torch.utils.data.TensorDataset(test_X_tensor, test_Y_tensor)
     test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=False)
     model.load_state_dict(torch.load('Predictor\model.pth', weights_only=False))
-    model.eval() 
+    model.eval()
     correct = 0
     total = 0
 
     cm = np.zeros((3, 3), dtype=int)
 
-    with torch.no_grad():  
+    with torch.no_grad():
         for inputs, labels in test_loader:
             outputs = model(inputs.float())
             print(outputs)
@@ -32,13 +32,15 @@ def test_model(model):
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
-        accuracy = 100 * correct / total
-        print(f"Test Accuracy: {accuracy:.2f}%")
+    accuracy = 100 * correct / total
+    print(f"Test Accuracy: {accuracy:.2f}%")
 
-        cm = confusion_matrix(test_Y, model(test_X_tensor.float()).argmax(dim=1).numpy())
-        cm_display = ConfusionMatrixDisplay(cm, display_labels=np.arange(3)).plot(cmap='Blues')
-        plt.show()
-        ConfusionMatrixDisplay(cm, display_labels=np.arange(3)).plot(cmap='Blues')
+    predictions = model(test_X_tensor.float()).argmax(dim=1).numpy()
+    cm = confusion_matrix(test_Y, predictions, labels=np.arange(3))
+    cm_display = ConfusionMatrixDisplay(cm, display_labels=np.arange(3))
+    cm_display.plot(cmap='Blues')
+    plt.show()
+
 
 model = LinearNeuralNetwork()
 test_model(model)
