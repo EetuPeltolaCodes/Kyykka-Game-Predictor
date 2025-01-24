@@ -2,7 +2,7 @@ import requests
 
 response = requests.get('https://kyykka.com/api/teams/').json()
 
-with open('Training/Teams_data.csv', 'w') as file:
+with open('Predictor/Teams_data.csv', 'w') as file:
     file.write(f"Team ID,Match Played,Score Total,Throws Total,Average Score,Pike Percentage,Zeros Percentage,Match Average,Average Scaled Points Per Throw\n")
     for res in response:
         id_response = requests.get(f'https://kyykka.com/api/teams/{res["id"]}/').json()

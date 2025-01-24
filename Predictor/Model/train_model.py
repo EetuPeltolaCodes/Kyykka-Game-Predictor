@@ -14,8 +14,8 @@ def load_data(file):
     
 
 def train_model(num_epochs, batch_size):
-    train_X, train_Y = load_data('Training/train_data.csv')
-    validation_X, validation_Y = load_data('Training/validation_data.csv')
+    train_X, train_Y = load_data('Predictor/train_data.csv')
+    validation_X, validation_Y = load_data('Predictor/validation_data.csv')
     train_X = torch.tensor(train_X, dtype=torch.float32)
     train_Y = torch.tensor(train_Y, dtype=torch.long)
     validation_X = torch.tensor(validation_X, dtype=torch.float32)
@@ -75,7 +75,7 @@ def train_model(num_epochs, batch_size):
         train_losses.append(running_loss / len(train_loader))
         if val_running_loss < best_val_loss:
             best_val_loss = val_running_loss
-            torch.save(model.state_dict(), 'Training/model.pth')
+            torch.save(model.state_dict(), 'Predictor/model.pth')
         
         print(f'Epoch {epoch + 1}/{num_epochs}, Train Loss: {running_loss / len(train_loader):.4f}, Validation Loss: {val_running_loss:.4f}')
 
@@ -89,6 +89,6 @@ def train_model(num_epochs, batch_size):
     
     
 if __name__ == '__main__':
-    train_model(40, 32)
+    train_model(100, 32)
     
     

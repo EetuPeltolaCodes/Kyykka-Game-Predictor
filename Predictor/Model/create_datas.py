@@ -25,9 +25,9 @@ def get_matches():
     return home_ids, away_ids, winners
 
 def get_data(home_ids, away_ids, winners, step):
-    with open('Training\Teams_data.csv', 'r') as f:
+    with open('Predictor\Teams_data.csv', 'r') as f:
         teams_data = pd.read_csv(f)
-        with open(f'Training\{step}_data.csv', 'w') as f2:
+        with open(f'Predictor\{step}_data.csv', 'w') as f2:
             for home_id, away_id, winner in zip(home_ids, away_ids, winners):
                 home_data = teams_data[teams_data['Team ID'] == home_id]
                 away_data = teams_data[teams_data['Team ID'] == away_id]
@@ -50,8 +50,10 @@ def datas():
     validation_home_ids = np.array(home_ids)[validation_data_idxs]
     validation_away_ids = np.array(away_ids)[validation_data_idxs]
     validation_winners = np.array(winners)[validation_data_idxs]
-    get_data(train_home_ids, train_away_ids, train_winners, 'validation')
+    get_data(validation_home_ids, validation_away_ids, validation_winners, 'validation')
     test_home_ids = np.array(home_ids)[test_data_idxs]
     test_away_ids = np.array(away_ids)[test_data_idxs]
     test_winners = np.array(winners)[test_data_idxs]
-    get_data(train_home_ids, train_away_ids, train_winners, 'test')
+    get_data(test_home_ids, test_away_ids, test_winners, 'test')
+
+datas()
