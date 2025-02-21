@@ -44,3 +44,24 @@ def test_model(model):
 
 model = LinearNeuralNetwork()
 test_model(model)
+
+# MCMC = 466
+# Sulake = 477
+
+def predict(model, team1_id, team2_id, file='Predictor/Teams_data.csv'):
+    data = pd.read_csv(file, header=None).to_numpy()
+    team1_index = data[:,0] == str(team1_id)
+    team2_index = data[:,0] == str(team2_id)
+    team1_data = data[team1_index, 1:].astype(np.float32)
+    team2_data = data[team2_index, 1:].astype(np.float32)
+    team1_home_tensor = torch.tensor(np.concatenate((team1_data, team2_data), axis=1), dtype=torch.float32)
+    team2_home_tensor = torch.tensor(np.concatenate((team2_data, team1_data), axis=1), dtype=torch.float32)
+    model.load_state_dict(torch.load('Predictor\model.pth', weights_only=False))
+    model.eval()
+    with torch.no_grad():
+        team1_home_prediction = model(team1_home_tensor)
+        team2_home_prediction = model(team2_home_tensor)
+    print(f"If MCMC is home, the predicted odds are : {(1/team1_home_prediction[0][1]):.2f}, {(1/team1_home_prediction[0][0]):.2f}, {(1/team1_home_prediction[0][2]):.2f}")
+    print(f"If Sulake is home, the predicted odds are : {(1/team2_home_prediction[0][1]):.2f}, {(1/team2_home_prediction[0][0]):.2f}, {(1/team2_home_prediction[0][2]):.2f}")
+    
+predict(model, 466, 477)

@@ -76,8 +76,8 @@ def train_model(num_epochs, batch_size):
         if val_running_loss < best_val_loss:
             best_val_loss = val_running_loss
             torch.save(model.state_dict(), 'Predictor/model.pth')
-        
-        print(f'Epoch {epoch + 1}/{num_epochs}, Train Loss: {running_loss / len(train_loader):.4f}, Validation Loss: {val_running_loss:.4f}')
+        if epoch % 100 == 0:
+            print(f'Epoch {epoch + 1}/{num_epochs}, Train Loss: {running_loss / len(train_loader):.4f}, Validation Loss: {val_running_loss:.4f}')
 
     plt.figure()
     plt.plot(train_losses, label='Train loss')
@@ -89,6 +89,6 @@ def train_model(num_epochs, batch_size):
     
     
 if __name__ == '__main__':
-    train_model(100, 32)
+    train_model(200, 32)
     
     
